@@ -1,6 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
-import App from '../App'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+import { render, screen } from '@testing-library/react'
 import ShipPlacement from '../modules/game/ShipPlacement'
 import Player from '../modules/player/Player'
 
