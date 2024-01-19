@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 function PlayerVsPlayerForm({ onSubmit, onCancel }) {
@@ -27,8 +27,8 @@ function PlayerVsPlayerForm({ onSubmit, onCancel }) {
       data-testid='playervsplayerform'
     >
       {alert === true ? (
-        <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
-          <p class="font-bold">Same username</p>
+        <div className="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
+          <p className="font-bold">Same username</p>
           <p>Make sure you dont use the same username!</p>
         </div>
       ) : null}
@@ -56,7 +56,7 @@ function PlayerVsPlayerForm({ onSubmit, onCancel }) {
   )
 }
 
-PlayerVsPlayerForm.PropTypes = {
+PlayerVsPlayerForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired
 }

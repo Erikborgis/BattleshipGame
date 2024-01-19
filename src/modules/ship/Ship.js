@@ -12,3 +12,5 @@ class Ship {
   //Function to check if ship been sunk
   //Should check if status.every === true
 }
+
+export default Ship

@@ -14,3 +14,5 @@ class Player {
 
   //Function to hit ship??
 }
+
+export default Player

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PlayerVsPlayerForm from './modules/form/PlayerVsPlayerForm'
+import Game from './modules/game/Game'
 
 function App() {
 
@@ -32,10 +33,12 @@ function App() {
                 onCancel={handleCancel}
               />
             ) : gameStarted === true ? (
-              /* Renders if the game has started */
-              <div>
-                <p>Game just started!</p>
-              </div>
+              /* Renders the game */
+              <Game
+                playerOneName={playerOneName}
+                playerTwoName={playerTwoName}
+                onCancel={handleCancel}
+              />
             ) : (
               /* Renders if no form or game is active */
               <button

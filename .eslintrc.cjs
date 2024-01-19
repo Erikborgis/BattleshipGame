@@ -24,6 +24,5 @@ module.exports = {
     'react/prop-types': 'warn',
     'react/no-unused-state': 'warn',
     'max-lines': ['warn', { max: 300 }],
-    'no-nested-ternary': 'error',
   },
 }

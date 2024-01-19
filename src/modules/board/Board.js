@@ -10,3 +10,5 @@ class Board {
 
   //Functions to update the boardcells
 }
+
+export default Board

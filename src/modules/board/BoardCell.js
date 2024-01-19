@@ -7,3 +7,5 @@ class BoardCell {
 
   //Function to change status and color
 }
+
+export default BoardCell
