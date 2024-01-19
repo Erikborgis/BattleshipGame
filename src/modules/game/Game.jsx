@@ -83,7 +83,7 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
         {gameLogic.gamePhase === 'placement' ? (
           <div className='item-centered flex-col items-center ml-2'>
             {gameLogic.currentTurn.playerShips.every(ship => ship.placed) ? (
-              <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={{/* changeturn */ }}>
+              <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={gameLogic.changeTurn}>
                 Next Turn
               </button>
             ) : (

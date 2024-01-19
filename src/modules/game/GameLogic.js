@@ -18,6 +18,7 @@ class GameLogic {
     this.rotate = this.rotate.bind(this)
     this.onCellEnter = this.onCellEnter.bind(this)
     this.onCellLeave = this.onCellLeave.bind(this)
+    this.changeTurn = this.changeTurn.bind(this)
   }
 
   handleShipSelect(selectedShipId) {
@@ -34,6 +35,23 @@ class GameLogic {
 
   startGame() {
     this.currentTurn = this.playerOne
+  }
+
+  changeTurn() {
+
+    if (this.gamePhase === 'battle') {
+
+    } else {
+      if (this.currentTurn === this.playerOne) {
+        this.currentTurn = this.playerTwo
+      } else {
+        this.gamePhase = 'battle'
+        this.currentTurn = this.playerOne
+        this.playerOne.playerBoard.setAllCellsWhite()
+        this.playerTwo.playerBoard.setAllCellsWhite()
+      }
+      this.triggerRender()
+    }
   }
 
   placeShipAndFire(row, col) {
