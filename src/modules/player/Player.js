@@ -1,7 +1,9 @@
+import Board from '../board/Board'
+
 class Player {
   constructor(name) {
     this.name = name
-    this.playerBoard = //Should hold their gameboard
+    this.playerBoard = new Board()
     this.playerShips = [] //Should hold their ships
     this.shipsLeft = null
     
