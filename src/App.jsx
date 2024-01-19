@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import PlayerVsPlayerForm from './modules/form/PlayerVsPlayerForm'
 
 function App() {
 
@@ -7,8 +8,15 @@ function App() {
   const [gameModeSelected, setGameModeSelected] = useState(null)
   const [gameStarted, setGameStarted] = useState(false)
 
-  const divChanges = () => {
+  const handleCancel = () => {
+    setGameModeSelected(null)
+    setGameStarted(false)
+  }
 
+  const handleFormSubmit = (playerOneName, playerTwoName) => {
+    setPlayerOneName(playerOneName)
+    setPlayerTwoName(playerTwoName)
+    setGameStarted(true)
   }
 
   return (
@@ -19,16 +27,19 @@ function App() {
           <div className='flex flex-col gap-4 mt-4'>
             {gameModeSelected === 'PlayerVsPlayer' && !gameStarted ? (
               /* Render PlayerVsPlayerForm */
-              <div>
-                <p>Should render PlayerVsPlayerForm</p>
-              </div>
+              <PlayerVsPlayerForm
+                onSubmit={handleFormSubmit}
+                onCancel={handleCancel}
+              />
             ) : gameStarted === true ? (
               /* Renders if the game has started */
-              <div></div>
+              <div>
+                <p>Game just started!</p>
+              </div>
             ) : (
               /* Renders if no form or game is active */
               <button
-                className='text-center bg-green-800 bg-opacity-70 rounded-lg'
+                className='text-center bg-green-800 bg-opacity-70 rounded-lg font-bold py-2 px-4'
                 onClick={() => setGameModeSelected('PlayerVsPlayer')}
               >
                 Player VS Player
