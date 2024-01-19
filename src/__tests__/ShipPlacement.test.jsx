@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { fireEvent, render, screen } from '@testing-library/react'
 import ShipPlacement from '../modules/game/ShipPlacement'
 import Player from '../modules/player/Player'
@@ -28,7 +28,7 @@ describe('ShipPlacementMenu', () => {
     const handleSubmitSpy = vi.fn()
     const player = new Player('Test')
 
-    const { getByTestId } = render(<ShipPlacement ships={player.playerShips} onClickFunction={handleSubmitSpy} />)
+    render(<ShipPlacement ships={player.playerShips} onClickFunction={handleSubmitSpy} />)
 
     const carrierButton = screen.getByTestId('ship-button-carrier')
     fireEvent.click(carrierButton)

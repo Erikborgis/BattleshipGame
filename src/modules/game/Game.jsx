@@ -8,8 +8,10 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
 
   const [gameLogic, setGameLogic] = useState(null)
 
+  const [highlightedCells, setHighlightedCells] = useState([])
+
   useEffect(() => {
-    const logic = new GameLogic(playerOneName, playerTwoName)
+    const logic = new GameLogic(playerOneName, playerTwoName, setHighlightedCells)
     setGameLogic(logic)
     logic.startGame()
 
@@ -36,6 +38,9 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
           <p className='font-bold'>Make sure that only {gameLogic.currentTurn.name.charAt(0).toUpperCase() + gameLogic.currentTurn.name.slice(1)} is looking</p>
           <GameBoard
             board={gameLogic.currentTurn.playerBoard.board}
+            highlightedCells={highlightedCells}
+            onCellEnter={gameLogic.onCellEnter}
+            onCellLeave={gameLogic.onCellLeave}
           />
         </div>
       )
@@ -46,6 +51,9 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
           <p className='font-bold'>Red = Hit ---- Blue = Miss --- Green = Sunk</p>
           <GameBoard
             board={gameLogic.playerTwo.playerBoard.board}
+            highlightedCells={highlightedCells}
+            onCellEnter={gameLogic.onCellEnter}
+            onCellLeave={gameLogic.onCellLeave}
           />
         </div>
       )
@@ -56,6 +64,9 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
           <p className='font-bold'>Red = Hit ---- Blue = Miss --- Green = Sunk</p>
           <GameBoard
             board={gameLogic.playerOne.playerBoard.board}
+            highlightedCells={highlightedCells}
+            onCellEnter={gameLogic.onCellEnter}
+            onCellLeave={gameLogic.onCellLeave}
           />
         </div>
       )
@@ -73,7 +84,7 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
                 Next Turn
               </button>
             ) : (
-              <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={{/* Rotate ship */ }}>
+              <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={gameLogic.rotate}>
                 Rotate
               </button>
             )}
