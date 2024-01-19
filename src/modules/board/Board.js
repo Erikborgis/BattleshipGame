@@ -1,3 +1,5 @@
+import BoardCell from './BoardCell'
+
 class Board {
   constructor() {
     //Fills the board with a 10x10 grid of boardcells
