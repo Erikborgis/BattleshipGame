@@ -1,5 +1,9 @@
 import BoardCell from './BoardCell'
 
+/**
+ * Class for the gameboard.
+ * Handles the boardcells.
+ */
 class Board {
   constructor() {
     //Fills the board with a 10x10 grid of boardcells

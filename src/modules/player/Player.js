@@ -42,12 +42,12 @@ class Player {
 
   hitShip(row, col) {
     const targetedShip = this.playerShips[this.getShipIndexFromId(this.playerBoard.getCell(row,col).shipId)]
-    //If true then ship is sunk
     this.playerBoard.markHit(row,col)
+
+    //If true then ship is sunk
     if (targetedShip.hitSegment(row, col)) {
       targetedShip.position.forEach(coordinate => {
         this.playerBoard.markCellSunk(coordinate.row, coordinate.col)
-        
       })
       this.shipsLeft--
       return true

@@ -1,7 +1,8 @@
 import Player from '../player/Player'
 
-//A class that will handle most of the logic in the game.
-
+/**
+ * Handles the logic of the game
+ */
 class GameLogic {
   constructor(playerOneName, playerTwoName, setHighlightedCells, setGameLogic, setIsTurnChanging, setIsWinner) {
     this.playerOne = new Player(playerOneName)
@@ -23,6 +24,10 @@ class GameLogic {
     this.changeTurn = this.changeTurn.bind(this)
   }
 
+  /**
+   * Just sets the index of the ship
+   * @param {*} selectedShipId 
+   */
   handleShipSelect(selectedShipId) {
     const currentPlayerShips = this.currentTurn.playerShips
     const index = currentPlayerShips.findIndex(ship => ship.shipId === selectedShipId)
@@ -30,15 +35,24 @@ class GameLogic {
     this.selectedShipIndex = index
   }
 
+  /**
+   * Function to trigger rerendering of the ui
+   */
   triggerRender() {
     const newGameLogic = { ...this }
     this.setGameLogic(newGameLogic)
   }
 
+  /**
+   * Only runs once.
+   */
   startGame() {
     this.currentTurn = this.playerOne
   }
 
+  /**
+   * Function that changes the turn
+   */
   changeTurn() {
 
     if (this.gamePhase === 'battle') {
@@ -55,7 +69,7 @@ class GameLogic {
         this.triggerRender()
 
         this.setIsTurnChanging(false)
-      }, 0)
+      }, 1000)
     } else {
       if (this.currentTurn === this.playerOne) {
         this.currentTurn = this.playerTwo
@@ -69,6 +83,12 @@ class GameLogic {
     }
   }
 
+  /**
+   * Function to place the ships and also fire.
+   * Depending on the gamephase
+   * @param {*} row 
+   * @param {*} col 
+   */
   placeShipAndFire(row, col) {
     if (this.selectedShipIndex !== null && this.gamePhase === 'placement') {
       this.placeShip(row, col)
@@ -85,6 +105,11 @@ class GameLogic {
     this.setHighlightedCells([])
   }
 
+  /**
+   * Function that handles the placement of the ships
+   * @param {*} row 
+   * @param {*} col 
+   */
   placeShip(row, col) {
     if (this.validShipPlacement(row,col, this.rotation, this.currentTurn.playerShips[this.selectedShipIndex].size)) {
       this.currentTurn.placeShip(row, col, this.rotation, this.selectedShipIndex)
@@ -92,6 +117,13 @@ class GameLogic {
     }
   }
 
+  /**
+   * Function that handles the firing against a ship
+   * @param {*} row 
+   * @param {*} col 
+   * @param {*} targetedPlayer 
+   * @returns 
+   */
   fireAgainstShip(row, col, targetedPlayer) {
     if (this.validFireTarget(row, col)) {
       if(targetedPlayer.playerBoard.getCell(row,col).status === 'ship') {
@@ -108,6 +140,11 @@ class GameLogic {
     }
   }
 
+  /**
+   * Mouseenter on the gameboard
+   * @param {*} row 
+   * @param {*} col 
+   */
   onCellEnter(row, col) {
     const currentPlayerShips = this.currentTurn.playerShips
 
@@ -135,10 +172,19 @@ class GameLogic {
     this.setHighlightedCells(highlightedCells)
   }
 
+  /**
+   * Mouse leave on gameboards
+   */
   onCellLeave() {
     this.setHighlightedCells([])
   }
 
+  /**
+   * Checks if the target selected can be fired upon
+   * @param {*} row 
+   * @param {*} col 
+   * @returns 
+   */
   validFireTarget(row, col) {
     if (row >= 0 && row < 10 && col >= 0 && col < 10) {
       if (this.currentTurn === this.playerOne) {
@@ -155,6 +201,16 @@ class GameLogic {
     }
   }
 
+  /**
+   * Checks if the placement of the ship is valid
+   * Not allowed to be outside grid
+   * Not allowed to cross over another ship.
+   * @param {*} row 
+   * @param {*} col 
+   * @param {*} orientation 
+   * @param {*} size 
+   * @returns 
+   */
   validShipPlacement(row, col, orientation, size) {
     if (orientation === 'horizontal') {
       if (row >= 0 && row < 10 && col >= 0 && col + size <= 10) {
@@ -183,6 +239,9 @@ class GameLogic {
     return false
   }
 
+  /**
+   * Rotates the ship placement
+   */
   rotate() {
     this.rotation = this.rotation === 'horizontal' ? 'vertical' : 'horizontal'
   }

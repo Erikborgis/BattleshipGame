@@ -1,3 +1,7 @@
+
+/**
+ * The cells of the gameboard.
+ */
 class BoardCell {
   constructor() {
     this.status = 'empty' //Hit, ship, empty, miss
