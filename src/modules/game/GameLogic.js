@@ -8,6 +8,15 @@ class GameLogic {
     this.playerTwo = new Player(playerTwoName)
     this.gamePhase = 'placement' //phase has two types 'placement' and 'battle'
     this.currentTurn = null
+
+    this.handleShipSelect = this.handleShipSelect.bind(this)
+  }
+
+  handleShipSelect(selectedShipId) {
+    const currentPlayerShips = this.currentTurn.playerShips
+    const index = currentPlayerShips.findIndex(ship => ship.shipId === selectedShipId)
+
+    this.selectedShipIndex = index
   }
 
   startGame() {

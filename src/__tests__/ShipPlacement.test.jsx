@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import ShipPlacement from '../modules/game/ShipPlacement'
 import Player from '../modules/player/Player'
 
-describe('FormSubmit', () => {
+describe('ShipPlacementMenu', () => {
   it('Renders form', () => {
 
     const player = new Player('Test')
@@ -21,5 +21,18 @@ describe('FormSubmit', () => {
     expect(cruiserButton).toBeInTheDocument()
     expect(submarineButton).toBeInTheDocument()
     expect(destroyerButton).toBeInTheDocument()
+  })
+
+  it('Buttons works as expected', () => {
+
+    const handleSubmitSpy = vi.fn()
+    const player = new Player('Test')
+
+    const { getByTestId } = render(<ShipPlacement ships={player.playerShips} onClickFunction={handleSubmitSpy} />)
+
+    const carrierButton = screen.getByTestId('ship-button-carrier')
+    fireEvent.click(carrierButton)
+
+    expect(handleSubmitSpy).toHaveBeenCalledOnce()
   })
 })

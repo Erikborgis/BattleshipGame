@@ -79,6 +79,7 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
             )}
             <ShipPlacement
               ships={gameLogic.currentTurn.playerShips}
+              onClickFunction={gameLogic.handleShipSelect}
             />
           </div>
         ) : null}
