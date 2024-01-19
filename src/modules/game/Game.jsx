@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import GameLogic from './GameLogic'
 import GameBoard from './GameBoard'
+import ShipPlacement from './ShipPlacement'
 
 function Game({ playerOneName, playerTwoName, onCancel }) {
 
@@ -20,12 +21,12 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
     return <div>Loading...</div>
   }
 
- /**
-  * Three different cases for boards
-  * Placement: Show their own board (1 case)
-  * Battle: Show the other players board (2 cases)
-  * @returns A div of the correct players board.
-  */
+  /**
+   * Three different cases for boards
+   * Placement: Show their own board (1 case)
+   * Battle: Show the other players board (2 cases)
+   * @returns A div of the correct players board.
+   */
   const divBoard = () => {
     if (gameLogic.phase === 'placement') {
       //Should generate their own board
@@ -55,6 +56,9 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
   return (
     <div>
       {divBoard()}
+      <ShipPlacement
+        ships={gameLogic.currentTurn.playerShips}
+      />
       <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={onCancel}>
         Abort game
       </button>

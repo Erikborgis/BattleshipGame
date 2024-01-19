@@ -1,15 +1,31 @@
 import Board from '../board/Board'
+import Ship from '../ship/Ship'
 
 class Player {
   constructor(name) {
     this.name = name
     this.playerBoard = new Board()
-    this.playerShips = [] //Should hold their ships
+    this.playerShips = []
     this.shipsLeft = null
+    this.generateShips()
     
   }
 
-  //Function to generate ships for the player
+  /**
+   * Function to generate ships for player.
+   * Should only be run once the player is created.
+   */
+  generateShips() {
+    const shipSizes = [5, 4, 3, 3, 2]
+    const shipId = ['carrier', 'battleship', 'cruiser', 'submarine', 'destroyer']
+    let i = 0
+
+    shipSizes.forEach(size => {
+      this.playerShips.push(new Ship(size, shipId[i]))
+      i++
+    })
+    this.shipsLeft = 5
+  }
 
 
   //Function to place ships??
