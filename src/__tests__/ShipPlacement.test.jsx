@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import ShipPlacement from '../modules/game/ShipPlacement'
 import Player from '../modules/player/Player'
 
-describe('ShipPlacementMenu', () => {
+describe('ShipPlacementMenu UI', () => {
   it('Renders form', () => {
 
     const player = new Player('Test')

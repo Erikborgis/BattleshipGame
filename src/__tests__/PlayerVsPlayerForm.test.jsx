@@ -3,7 +3,7 @@ import App from '../App'
 import { fireEvent, render, screen } from '@testing-library/react'
 import PlayerVsPlayerForm from '../modules/form/PlayerVsPlayerForm'
 
-describe('FormSubmit', () => {
+describe('FormSubmit UI', () => {
   it('Renders form', () => {
     render(<App />)
 
