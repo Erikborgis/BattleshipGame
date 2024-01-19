@@ -11,7 +11,7 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
   const [highlightedCells, setHighlightedCells] = useState([])
 
   useEffect(() => {
-    const logic = new GameLogic(playerOneName, playerTwoName, setHighlightedCells)
+    const logic = new GameLogic(playerOneName, playerTwoName, setHighlightedCells, setGameLogic)
     setGameLogic(logic)
     logic.startGame()
 
@@ -41,6 +41,7 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
             highlightedCells={highlightedCells}
             onCellEnter={gameLogic.onCellEnter}
             onCellLeave={gameLogic.onCellLeave}
+            onCellClick={gameLogic.placeShipAndFire}
           />
         </div>
       )
@@ -54,6 +55,7 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
             highlightedCells={highlightedCells}
             onCellEnter={gameLogic.onCellEnter}
             onCellLeave={gameLogic.onCellLeave}
+            onCellClick={gameLogic.placeShipAndFire}
           />
         </div>
       )
@@ -67,6 +69,7 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
             highlightedCells={highlightedCells}
             onCellEnter={gameLogic.onCellEnter}
             onCellLeave={gameLogic.onCellLeave}
+            onCellClick={gameLogic.placeShipAndFire}
           />
         </div>
       )

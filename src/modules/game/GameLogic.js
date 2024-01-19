@@ -3,7 +3,7 @@ import Player from '../player/Player'
 //A class that will handle most of the logic in the game.
 
 class GameLogic {
-  constructor(playerOneName, playerTwoName, setHighlightedCells) {
+  constructor(playerOneName, playerTwoName, setHighlightedCells, setGameLogic) {
     this.playerOne = new Player(playerOneName)
     this.playerTwo = new Player(playerTwoName)
     this.gamePhase = 'placement' //phase has two types 'placement' and 'battle'
@@ -11,8 +11,10 @@ class GameLogic {
     this.selectedShipIndex = null
     this.setHighlightedCells = setHighlightedCells
     this.rotation = 'horizontal'
+    this.setGameLogic = setGameLogic
 
     this.handleShipSelect = this.handleShipSelect.bind(this)
+    this.placeShipAndFire = this.placeShipAndFire.bind(this)
     this.rotate = this.rotate.bind(this)
     this.onCellEnter = this.onCellEnter.bind(this)
     this.onCellLeave = this.onCellLeave.bind(this)
@@ -25,8 +27,34 @@ class GameLogic {
     this.selectedShipIndex = index
   }
 
+  triggerRender() {
+    const newGameLogic = { ...this }
+    this.setGameLogic(newGameLogic)
+  }
+
   startGame() {
     this.currentTurn = this.playerOne
+  }
+
+  placeShipAndFire(row, col) {
+    if (this.selectedShipIndex !== null && this.gamePhase === 'placement') {
+      this.placeShip(row, col)
+    } else if (this.gamePhase === 'firetime') {
+      this.fireAgainstShip()
+    }
+    this.triggerRender()
+    this.setHighlightedCells([])
+  }
+
+  placeShip(row, col) {
+    if (this.validShipPlacement(row,col, this.rotation, this.currentTurn.playerShips[this.selectedShipIndex].size)) {
+      this.currentTurn.placeShip(row, col, this.rotation, this.selectedShipIndex)
+      this.selectedShipIndex = null
+    }
+  }
+
+  fireAgainstShip() {
+    {/* To be implemented */}
   }
 
   onCellEnter(row, col) {

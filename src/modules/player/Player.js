@@ -27,6 +27,18 @@ class Player {
     this.shipsLeft = 5
   }
 
+  placeShip(startRow, startCol, orientation, shipIndex) {
+    this.playerShips[shipIndex].placed = true
+
+    for (let i = 0; i < this.playerShips[shipIndex].size; i++) {
+      if (orientation === 'horizontal') {
+        this.playerShips[shipIndex].position.push({row: startRow, col: startCol + i})
+      } else {
+        this.playerShips[shipIndex].position.push({row: startRow + i, col: startCol})
+      }
+    }
+    this.playerBoard.markShipCells(startRow, startCol, orientation, this.playerShips[shipIndex].shipId, this.playerShips[shipIndex].size)
+  }
 
   //Function to place ships??
 
