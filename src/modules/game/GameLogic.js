@@ -40,7 +40,12 @@ class GameLogic {
   changeTurn() {
 
     if (this.gamePhase === 'battle') {
-
+      
+      if (this.currentTurn === this.playerOne) {
+        this.currentTurn = this.playerTwo
+      } else {
+        this.currentTurn = this.playerOne
+      }
     } else {
       if (this.currentTurn === this.playerOne) {
         this.currentTurn = this.playerTwo
@@ -50,15 +55,22 @@ class GameLogic {
         this.playerOne.playerBoard.setAllCellsWhite()
         this.playerTwo.playerBoard.setAllCellsWhite()
       }
-      this.triggerRender()
     }
+    this.triggerRender()
   }
 
   placeShipAndFire(row, col) {
     if (this.selectedShipIndex !== null && this.gamePhase === 'placement') {
       this.placeShip(row, col)
-    } else if (this.gamePhase === 'firetime') {
-      this.fireAgainstShip()
+    } else if (this.gamePhase === 'battle') {
+
+      if(this.currentTurn === this.playerOne) {
+        this.fireAgainstShip(row, col, this.playerTwo)
+        this.changeTurn()
+      } else {
+        this.fireAgainstShip(row, col, this.playerOne)
+        this.changeTurn()
+      }
     }
     this.triggerRender()
     this.setHighlightedCells([])
@@ -71,8 +83,19 @@ class GameLogic {
     }
   }
 
-  fireAgainstShip() {
-    {/* To be implemented */}
+  fireAgainstShip(row, col, targetedPlayer) {
+    if (this.validFireTarget(row, col)) {
+      if(targetedPlayer.playerBoard.getCell(row,col).status === 'ship') {
+        if(targetedPlayer.hitShip(row, col)) {
+          //Sunk
+          if (targetedPlayer.shipsLeft === 0) {
+            //currentTurn wins!
+          }
+        }
+      } else {
+        targetedPlayer.playerBoard.setCellStatus(row,col, 'miss')
+      }
+    }
   }
 
   onCellEnter(row, col) {
@@ -95,13 +118,31 @@ class GameLogic {
         }
       }
     } else if (this.gamePhase === 'battle') {
-      /* To be implemented */
+      if (this.validFireTarget(row, col)) {
+        highlightedCells.push({ row: row, col: col })
+      }
     }
     this.setHighlightedCells(highlightedCells)
   }
 
   onCellLeave() {
     this.setHighlightedCells([])
+  }
+
+  validFireTarget(row, col) {
+    if (row >= 0 && row < 10 && col >= 0 && col < 10) {
+      if (this.currentTurn === this.playerOne) {
+        if (this.playerTwo.playerBoard.isValidFireTarget(row, col)) {
+          return true
+        }
+        return false
+      } else {
+        if (this.playerOne.playerBoard.isValidFireTarget(row, col)) {
+          return true
+        }
+        return false
+      }
+    }
   }
 
   validShipPlacement(row, col, orientation, size) {

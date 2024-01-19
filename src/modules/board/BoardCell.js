@@ -12,10 +12,12 @@ class BoardCell {
       this.setColor('bg-red-600')
     } else if (newStatus === 'ship') {
       this.setColor('bg-blue-200')
+    } else if (newStatus === 'sunk') {
+      this.setColor('bg-green-600')
     }
     this.status = newStatus
   }
-  
+
   setShipId(shipId) {
     this.shipId = shipId
   }

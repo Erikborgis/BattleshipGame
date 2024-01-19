@@ -7,10 +7,22 @@ class Ship {
     this.shipId = id //'battleship', 'carrier', 'submarine', 'cruiser', 'destroyer'
   }
   
-  //Function to hit segment of a ship
+  hitSegment(row, col) {
+    for (let i = 0; i < this.position.length; i++) {
+      const segment = this.position[i]
+      if (segment.row === row && segment.col === col) {
+        this.status[i] = true
+        break
+      }
+    }
+    const allTrue = this.status.every(status => status === true)
 
-  //Function to check if ship been sunk
-  //Should check if status.every === true
+    //If true then ship is sunk
+    if (allTrue) {
+      return true
+    }
+    return false
+  }
 }
 
 export default Ship

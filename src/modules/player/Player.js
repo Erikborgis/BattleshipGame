@@ -40,9 +40,39 @@ class Player {
     this.playerBoard.markShipCells(startRow, startCol, orientation, this.playerShips[shipIndex].shipId, this.playerShips[shipIndex].size)
   }
 
-  //Function to place ships??
+  hitShip(row, col) {
+    const targetedShip = this.playerShips[this.getShipIndexFromId(this.playerBoard.getCell(row,col).shipId)]
+    //If true then ship is sunk
+    this.playerBoard.markHit(row,col)
+    if (targetedShip.hitSegment(row, col)) {
+      targetedShip.position.forEach(coordinate => {
+        this.playerBoard.markCellSunk(coordinate.row, coordinate.col)
+      })
+      return true
+    }
+    return false
+  }
 
-  //Function to hit ship??
+
+
+  getShipIndexFromId(id) {
+    switch (id) {
+    case 'carrier':
+      return 0
+    case 'battleship':
+      return 1
+    case 'cruiser':
+      return 2
+    case 'submarine':
+      return 3
+    case 'destroyer':
+      return 4
+    }
+  }
+
+  markSunk(row, col) {
+
+  }
 }
 
 export default Player

@@ -45,6 +45,25 @@ class Board {
     }
   }
 
+  isValidFireTarget(row, col) {
+    if (this.getCell(row, col).status !== 'miss') {
+      if (this.getCell(row, col).status !== 'sunk') {
+        if (this.getCell(row, col).status !== 'hit') {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
+  markHit(row, col) {
+    this.setCellStatus(row, col, 'hit')
+  }
+
+  markCellSunk(row, col) {
+    this.setCellStatus(row, col, 'sunk')
+  }
+
   isValidPosition(row, col) {
     return row >= 0 && row < 10 && col >= 0 && col < 10
   }
