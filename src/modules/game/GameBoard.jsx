@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-function GameBoard({ board, onCellEnter, onCellLeave, highlightedCells, onCellClick }) {
+function GameBoard({ board, onCellEnter, onCellLeave, highlightedCells, onCellClick, isTurnChanging }) {
 
   function isHighlighted(row, col) {
     return highlightedCells.some(cell => cell.row === row && cell.col === col)
@@ -17,6 +17,7 @@ function GameBoard({ board, onCellEnter, onCellLeave, highlightedCells, onCellCl
               onMouseEnter={() => onCellEnter(rowIndex, colIndex)}
               onMouseLeave={() => onCellLeave()}
               onClick={() => onCellClick(rowIndex, colIndex)}
+              disabled={isTurnChanging}
             >
             </button>
           ))}
@@ -32,6 +33,7 @@ GameBoard.propTypes = {
   onCellLeave: PropTypes.func.isRequired,
   highlightedCells: PropTypes.array.isRequired,
   onCellClick: PropTypes.func.isRequired,
+  isTurnChanging: PropTypes.func.isRequired
 }
 
 export default GameBoard

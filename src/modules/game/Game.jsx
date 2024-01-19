@@ -10,8 +10,12 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
 
   const [highlightedCells, setHighlightedCells] = useState([])
 
+  const [isTurnChanging, setIsTurnChanging] = useState(false)
+
+  const [isWinner, setIsWinner] = useState(null)
+
   useEffect(() => {
-    const logic = new GameLogic(playerOneName, playerTwoName, setHighlightedCells, setGameLogic)
+    const logic = new GameLogic(playerOneName, playerTwoName, setHighlightedCells, setGameLogic, setIsTurnChanging, setIsWinner)
     setGameLogic(logic)
     logic.startGame()
 
@@ -42,13 +46,16 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
             onCellEnter={gameLogic.onCellEnter}
             onCellLeave={gameLogic.onCellLeave}
             onCellClick={gameLogic.placeShipAndFire}
+            isTurnChanging={isTurnChanging}
           />
         </div>
       )
     } else if (gameLogic.currentTurn === gameLogic.playerOne && gameLogic.gamePhase !== 'placement') {
-      //If this scenario happens it means it is battle and should generate playerTwos board
+      //Battle playerOne turn so playerOne board should be visible
       return (
         <div>
+          <p className='font-bold'>{gameLogic.gamePhase.charAt(0).toUpperCase() + gameLogic.gamePhase.slice(1)} for player: {gameLogic.currentTurn.name.charAt(0).toUpperCase() + gameLogic.currentTurn.name.slice(1)}</p>
+          <p className='font-bold'>Fire on player: {gameLogic.playerOne.name.charAt(0).toUpperCase() + gameLogic.playerOne.name.slice(1)}</p>
           <p className='font-bold'>Red = Hit ---- Blue = Miss --- Green = Sunk</p>
           <GameBoard
             board={gameLogic.playerTwo.playerBoard.board}
@@ -56,6 +63,7 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
             onCellEnter={gameLogic.onCellEnter}
             onCellLeave={gameLogic.onCellLeave}
             onCellClick={gameLogic.placeShipAndFire}
+            isTurnChanging={isTurnChanging}
           />
         </div>
       )
@@ -63,6 +71,8 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
       //Battle playerTwo turn so playerOne board should be visible
       return (
         <div>
+          <p className='font-bold'>{gameLogic.gamePhase.charAt(0).toUpperCase() + gameLogic.gamePhase.slice(1)} for player: {gameLogic.currentTurn.name.charAt(0).toUpperCase() + gameLogic.currentTurn.name.slice(1)}</p>
+          <p className='font-bold'>Fire on player: {gameLogic.playerOne.name.charAt(0).toUpperCase() + gameLogic.playerOne.name.slice(1)}</p>
           <p className='font-bold'>Red = Hit ---- Blue = Miss --- Green = Sunk</p>
           <GameBoard
             board={gameLogic.playerOne.playerBoard.board}
@@ -70,6 +80,7 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
             onCellEnter={gameLogic.onCellEnter}
             onCellLeave={gameLogic.onCellLeave}
             onCellClick={gameLogic.placeShipAndFire}
+            isTurnChanging={isTurnChanging}
           />
         </div>
       )
@@ -78,30 +89,41 @@ function Game({ playerOneName, playerTwoName, onCancel }) {
 
   return (
     <div>
-      <div className='flex justify-center items-center'>
-        {divBoard()}
-        {gameLogic.gamePhase === 'placement' ? (
-          <div className='item-centered flex-col items-center ml-2'>
-            {gameLogic.currentTurn.playerShips.every(ship => ship.placed) ? (
-              <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={gameLogic.changeTurn}>
-                Next Turn
-              </button>
-            ) : (
-              <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={gameLogic.rotate}>
-                Rotate
-              </button>
-            )}
-            <ShipPlacement
-              ships={gameLogic.currentTurn.playerShips}
-              onClickFunction={gameLogic.handleShipSelect}
-            />
+      {isWinner === null ? (
+        <div>
+          <div className='flex justify-center items-center'>
+            {divBoard()}
+            {gameLogic.gamePhase === 'placement' ? (
+              <div className='item-centered flex-col items-center ml-2'>
+                {gameLogic.currentTurn.playerShips.every(ship => ship.placed) ? (
+                  <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={gameLogic.changeTurn}>
+                    Next Turn
+                  </button>
+                ) : (
+                  <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={gameLogic.rotate}>
+                    Rotate
+                  </button>
+                )}
+                <ShipPlacement
+                  ships={gameLogic.currentTurn.playerShips}
+                  onClickFunction={gameLogic.handleShipSelect}
+                />
+              </div>
+            ) : null}
           </div>
-        ) : null}
-
-      </div>
-      <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={onCancel}>
-        Abort game
-      </button>
+          <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={onCancel}>
+            Abort game
+          </button>
+        </div>
+      ) : (
+        <div className='flex justify-center items-center flex-col'>
+          <h1 className='text-xl font-bold mb-4'>Congrats!! {isWinner.name} sunk the last ship and won!!!</h1>
+          <img src='/Winner.png' alt='Winner' width={400} height={400} />
+          <button className='text-center bg-green-800 bg-opacity-70 p-2 rounded-lg mt-4' type='button' onClick={onCancel}>
+            Go back to main menu
+          </button>
+        </div>
+      )}
     </div>
   )
 }

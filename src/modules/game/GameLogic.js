@@ -3,7 +3,7 @@ import Player from '../player/Player'
 //A class that will handle most of the logic in the game.
 
 class GameLogic {
-  constructor(playerOneName, playerTwoName, setHighlightedCells, setGameLogic) {
+  constructor(playerOneName, playerTwoName, setHighlightedCells, setGameLogic, setIsTurnChanging, setIsWinner) {
     this.playerOne = new Player(playerOneName)
     this.playerTwo = new Player(playerTwoName)
     this.gamePhase = 'placement' //phase has two types 'placement' and 'battle'
@@ -12,6 +12,8 @@ class GameLogic {
     this.setHighlightedCells = setHighlightedCells
     this.rotation = 'horizontal'
     this.setGameLogic = setGameLogic
+    this.setIsTurnChanging = setIsTurnChanging
+    this.setIsWinner = setIsWinner
 
     this.handleShipSelect = this.handleShipSelect.bind(this)
     this.placeShipAndFire = this.placeShipAndFire.bind(this)
@@ -40,12 +42,20 @@ class GameLogic {
   changeTurn() {
 
     if (this.gamePhase === 'battle') {
-      
-      if (this.currentTurn === this.playerOne) {
-        this.currentTurn = this.playerTwo
-      } else {
-        this.currentTurn = this.playerOne
-      }
+
+      this.setIsTurnChanging(true)
+
+      setTimeout(() => {
+        if (this.currentTurn === this.playerOne) {
+          this.currentTurn = this.playerTwo
+        } else {
+          this.currentTurn = this.playerOne
+        }
+
+        this.triggerRender()
+
+        this.setIsTurnChanging(false)
+      }, 0)
     } else {
       if (this.currentTurn === this.playerOne) {
         this.currentTurn = this.playerTwo
@@ -55,8 +65,8 @@ class GameLogic {
         this.playerOne.playerBoard.setAllCellsWhite()
         this.playerTwo.playerBoard.setAllCellsWhite()
       }
+      this.triggerRender()
     }
-    this.triggerRender()
   }
 
   placeShipAndFire(row, col) {
@@ -66,10 +76,9 @@ class GameLogic {
 
       if(this.currentTurn === this.playerOne) {
         this.fireAgainstShip(row, col, this.playerTwo)
-        this.changeTurn()
+        
       } else {
         this.fireAgainstShip(row, col, this.playerOne)
-        this.changeTurn()
       }
     }
     this.triggerRender()
@@ -89,12 +98,13 @@ class GameLogic {
         if(targetedPlayer.hitShip(row, col)) {
           //Sunk
           if (targetedPlayer.shipsLeft === 0) {
-            //currentTurn wins!
+            return this.setIsWinner(this.currentTurn)
           }
         }
       } else {
         targetedPlayer.playerBoard.setCellStatus(row,col, 'miss')
       }
+      this.changeTurn()
     }
   }
 

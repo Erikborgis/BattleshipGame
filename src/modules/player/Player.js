@@ -47,7 +47,9 @@ class Player {
     if (targetedShip.hitSegment(row, col)) {
       targetedShip.position.forEach(coordinate => {
         this.playerBoard.markCellSunk(coordinate.row, coordinate.col)
+        
       })
+      this.shipsLeft--
       return true
     }
     return false
@@ -68,10 +70,6 @@ class Player {
     case 'destroyer':
       return 4
     }
-  }
-
-  markSunk(row, col) {
-
   }
 }
 
